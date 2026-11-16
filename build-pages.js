@@ -18,7 +18,7 @@ const page = `<!doctype html>
 <meta name="theme-color" content="#0A0A0A">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="Biblioteca">
+<meta name="apple-mobile-web-app-title" content="Stuff">
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-192.png">
@@ -35,8 +35,8 @@ if('serviceWorker' in navigator){window.addEventListener('load',function(){navig
 fs.writeFileSync(path.join(out, 'index.html'), page);
 
 fs.writeFileSync(path.join(out, 'manifest.webmanifest'), JSON.stringify({
-  name: 'Biblioteca do Pedro',
-  short_name: 'Biblioteca',
+  name: 'Stuff',
+  short_name: 'Stuff',
   description: 'Guarde, leia, anote, ouça e revise o que chamou sua atenção no dia.',
   lang: 'pt-BR',
   start_url: './',
@@ -57,7 +57,7 @@ fs.writeFileSync(path.join(out, 'manifest.webmanifest'), JSON.stringify({
 }, null, 2));
 
 /* Service worker: abre o app mesmo sem internet (os dados já ficam no aparelho) */
-fs.writeFileSync(path.join(out, 'sw.js'), `const V = 'bp-v2';
+fs.writeFileSync(path.join(out, 'sw.js'), `const V = 'bp-v3';
 const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });

@@ -1,4 +1,4 @@
-<title>Biblioteca do Pedro</title>
+<title>Stuff</title>
 <meta name="claude:viewport-fit-sides" content="cover">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -38,7 +38,7 @@ h1,h2,h3{margin:0}
 
 .wrap{max-width:680px;margin:0 auto;padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:0 calc(96px + env(safe-area-inset-bottom,0px))}
 body.has-mini .wrap{padding-bottom:calc(158px + env(safe-area-inset-bottom,0px))}
-.topo{display:flex;align-items:center;justify-content:space-between;min-height:50px}
+.topo{display:flex;align-items:center;justify-content:flex-end;min-height:50px}
 .topo span{color:var(--mut);font-size:13px;font-weight:500}
 .ic{display:grid;place-items:center;width:44px;height:44px;border:0;border-radius:50%;background:none;color:var(--ink2);flex:none;text-decoration:none}
 .ic:hover{color:var(--ink)}
@@ -206,18 +206,59 @@ input[type=range]{width:100%;accent-color:var(--c2);min-height:28px}
 .toast{position:fixed;left:50%;transform:translateX(-50%);bottom:calc(76px + env(safe-area-inset-bottom,0px));z-index:40;display:flex;align-items:center;gap:14px;max-width:calc(100% - 32px);background:var(--ink);color:var(--bg);padding:10px 14px;border-radius:var(--raio);font-size:14px;box-shadow:0 6px 20px rgba(0,0,0,.18)}
 .toast button{background:none;border:0;color:inherit;font-weight:650;text-decoration:underline;padding:4px 0;flex:none}
 body.has-mini .toast{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
+.btn,.tab,.aba,.chip,.field>span,.resumo .lbl,h3.dia{text-transform:lowercase}
+.side{display:none}
+.temabtn{position:fixed;right:max(12px,env(safe-area-inset-right,0px));bottom:calc(72px + env(safe-area-inset-bottom,0px));z-index:18;display:grid;place-items:center;width:42px;height:42px;border-radius:50%;border:1px solid var(--line2);background:var(--bg);color:var(--ink2)}
+body.has-mini .temabtn{bottom:calc(134px + env(safe-area-inset-bottom,0px))}
+/* Abertura: a sacola se desenha, as coisas caem dentro, a palavra sobe */
+.splash{position:fixed;inset:0;z-index:60;background:var(--bg);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:10px;transition:transform .4s cubic-bezier(.7,0,.2,1)}
+.splash.out{transform:translateY(-101%)}
+.bagsvg{width:120px;height:120px;fill:none;stroke-linecap:round;stroke-linejoin:round;overflow:visible}
+.bagsvg .ln{stroke:var(--c2);stroke-width:5;stroke-dasharray:1;stroke-dashoffset:1;animation:draw .9s var(--ease) forwards}
+.bagsvg .l2{animation-delay:.35s}
+.bagsvg .dot{fill:none;stroke:var(--c1);stroke-width:4;opacity:0;animation:dropin .55s var(--ease) forwards}
+.bagsvg .d1{animation-delay:.95s}
+.bagsvg .d2{animation-delay:1.15s;stroke:var(--ink)}
+.bagsvg .d3{animation-delay:1.35s}
+.sw{display:flex;font-family:var(--fd);font-size:64px;line-height:1.05;overflow:hidden;padding:2px 0}
+.sw span{display:inline-block;transform:translateY(110%);animation:letter .5s var(--ease) forwards;animation-delay:calc(1.55s + var(--k,0s))}
+.sw span:nth-child(3n+1){color:var(--c1)}
+.sw span:nth-child(3n){color:var(--c2)}
+.sw span:nth-child(2){--k:.07s}.sw span:nth-child(3){--k:.14s}.sw span:nth-child(4){--k:.21s}.sw span:nth-child(5){--k:.28s}.sw span:nth-child(6){--k:.35s}.sw span:nth-child(7){--k:.42s}.sw span:nth-child(8){--k:.49s}
+.splash.quick .ln{animation-duration:.35s}
+.splash.quick .l2{animation-delay:.1s}
+.splash.quick .d1{animation-delay:.3s}
+.splash.quick .d2{animation-delay:.38s}
+.splash.quick .d3{animation-delay:.46s}
+.splash.quick .sw{font-size:48px}
+.splash.quick .sw span{animation-duration:.3s;animation-delay:calc(.5s + var(--k,0s) / 2)}
+.splash small{color:var(--mut);font-size:14px;font-weight:500;text-transform:lowercase}
+@keyframes draw{to{stroke-dashoffset:0}}
+@keyframes dropin{from{opacity:0;transform:translateY(-26px)}60%{opacity:1}to{opacity:1;transform:translateY(22px) scale(.9)}}
+@keyframes letter{to{transform:none}}
+/* Computador: duas colunas no início, listas mais largas */
+@media (min-width:900px){
+  .wrap{max-width:1120px}
+  section[data-view="inicio"]{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,.85fr);gap:56px;align-items:center;min-height:calc(100vh - 190px)}
+  .hero{justify-content:flex-start;margin:0;font-size:clamp(4rem,6.4vw,6.6rem)}
+  .side{display:block;min-width:0}
+  section:not([data-view="inicio"])>*{max-width:760px;margin-left:auto;margin-right:auto}
+  .nav-in,.mini-in{max-width:760px}
+  .temabtn{right:24px;bottom:24px}
+  .vt{font-size:4.6rem}
+}
 @media (prefers-reduced-motion:reduce){*,*::before,*::after{animation:none!important;transition:none!important}}
 </style>
 
 <div class="wrap">
-  <header class="topo"><span id="today"></span><button class="ic" id="tema" aria-label="Tema"></button></header>
+  <header class="topo"><button class="ic" id="share" aria-label="Compartilhar o Stuff" hidden></button></header>
   <div class="banner" id="banner" hidden></div>
 
   <section data-view="inicio">
-    <h1 class="sr">Biblioteca do Pedro</h1>
+    <h1 class="sr">Stuff</h1>
     <nav class="hero" aria-label="Atalhos" id="hero"></nav>
-    <div id="cont"></div>
-    <div class="mq" id="mq" hidden><div class="mq-in" id="mq-in"></div></div>
+    <aside class="side" id="side"></aside>
+    <button class="temabtn" id="tema" aria-label="Tema"></button>
   </section>
 
   <section data-view="consumos" hidden>
@@ -227,7 +268,7 @@ body.has-mini .toast{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
   </section>
 
   <section data-view="revisar" hidden>
-    <h2 class="vt">revisar<sup id="rev-c"></sup></h2>
+    <h2 class="vt">lembrar<sup id="rev-c"></sup></h2>
     <div id="rev-list"></div>
   </section>
 
@@ -260,7 +301,7 @@ body.has-mini .toast{bottom:calc(140px + env(safe-area-inset-bottom,0px))}
     <div class="drawer-top"><b>guardar</b><button class="ic" type="button" data-capclose aria-label="Fechar" id="cap-x"></button></div>
     <textarea id="cap" placeholder="Link ou texto" aria-label="Link ou texto para guardar"></textarea>
     <div class="rolo" id="cap-types" role="group" aria-label="Tipo"></div>
-    <div class="drawer-foot"><button class="btn" type="button" id="cap-paste" hidden>Colar</button><button class="btn pri" id="cap-save" type="submit" disabled>Guardar</button></div>
+    <div class="drawer-foot"><button class="btn pri" id="cap-save" type="submit" disabled>Guardar</button></div>
   </form>
 </div>
 
@@ -455,6 +496,8 @@ const ICONS={
   phones:'<path d="M4.5 15v-3a7.5 7.5 0 0 1 15 0v3"/><path d="M4.5 14.5h2.5a.5.5 0 0 1 .5.5v4.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5zM19.5 14.5H17a.5.5 0 0 0-.5.5v4.5a.5.5 0 0 0 .5.5h2a.5.5 0 0 0 .5-.5z"/>',
   read:'<path d="M3.5 5.5h5.5a3 3 0 0 1 3 3v11a2 2 0 0 0-2-2H3.5zM20.5 5.5H15a3 3 0 0 0-3 3v11a2 2 0 0 1 2-2h6.5z"/>',
   pen:'<path d="M4.5 19.5h4L19 9l-4-4L4.5 15.5zM13.5 6.5l4 4"/>',
+  bag:'<path d="M5.5 8.5h13l1 11.5a.5.5 0 0 1-.5.5H5a.5.5 0 0 1-.5-.5z"/><path d="M9 8.5V7a3 3 0 0 1 6 0v1.5"/>',
+  share:'<path d="M12 15V4M8 7.5L12 3.5l4 4M5.5 12v7a.5.5 0 0 0 .5.5h12a.5.5 0 0 0 .5-.5v-7"/>',
   home:'<path d="M4 11l8-6.5 8 6.5v8a.5.5 0 0 1-.5.5H14.5V14h-5v5.5H4.5a.5.5 0 0 1-.5-.5z"/>',
   cal:'<rect x="3.5" y="5" width="17" height="15.5" rx="1.5"/><path d="M3.5 10h17M8 3v4M16 3v4"/>',
   repeat:'<path d="M4.5 12a7.5 7.5 0 0 1 13.2-4.9L19.5 9M19.5 4.5V9H15M19.5 12a7.5 7.5 0 0 1-13.2 4.9L4.5 15M4.5 19.5V15H9"/>',
@@ -471,10 +514,11 @@ function lsSet(k,v){try{localStorage.setItem('bp:'+k,JSON.stringify(v));}catch(e
 const prefs={engine:lsGet('engine',null),rate:lsGet('rate',1),voice:lsGet('voice',''),awake:lsGet('awake',true),tema:lsGet('tema','auto')};
 function savePrefs(){for(const k in prefs)lsSet(k,prefs[k]);}
 
-const TEMAS=[{k:'auto',l:'Automático',i:'auto'},{k:'claro',l:'Claro',i:'sun'},{k:'penumbra',l:'Penumbra',i:'dim'},{k:'escuro',l:'Escuro total',i:'dark'}];
+const TEMAS=[{k:'claro',l:'Claro',i:'sun'},{k:'penumbra',l:'Penumbra',i:'dim'},{k:'escuro',l:'Escuro',i:'dark'}];
+function temaAtual(){if(prefs.tema!=='auto'&&TEMAS.some(x=>x.k===prefs.tema))return prefs.tema;return window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches?'escuro':'claro';}
 function applyTema(){
-  const t=TEMAS.find(x=>x.k===prefs.tema)||TEMAS[0];
-  if(t.k==='auto')document.documentElement.removeAttribute('data-cor');else document.documentElement.setAttribute('data-cor',t.k);
+  const t=TEMAS.find(x=>x.k===temaAtual());
+  if(prefs.tema==='auto')document.documentElement.removeAttribute('data-cor');else document.documentElement.setAttribute('data-cor',t.k);
   $('tema').innerHTML=icon(t.i);$('tema').setAttribute('aria-label','Tema: '+t.l);$('tema').title='Tema: '+t.l;
 }
 
@@ -510,12 +554,11 @@ function banner(text){const b=$('banner');b.hidden=!text;b.textContent=text||'';
 
 async function init(){
   applyTema();
-  {const d=new Date();$('today').textContent=WD[d.getDay()]+', '+d.getDate()+' '+MO[d.getMonth()];}
+  $('share').innerHTML=icon('share');
   $('cap-x').innerHTML=icon('x');$('want-add').innerHTML=icon('plus');
   renderShell();renderTypeChips();renderFilters();route();
   if(!(window.claude&&window.claude.use)){
-    db=makeMemoryDb();mode='local';
-    $('cap-paste').hidden=!(navigator.clipboard&&navigator.clipboard.readText);
+    db=makeMemoryDb();mode='local';$('share').hidden=false;
   }else{
     const [d,t,s]=await Promise.all(['db','tts','sample'].map(n=>window.claude.use(n).catch(()=>null)));
     db=d;tts=t;sampler=s;mode=db?'cloud':'off';
@@ -599,20 +642,20 @@ async function loadBody(it){
 /* ---------- Estrutura fixa: cartaz e abas ---------- */
 const HERO=[
   {w:'guardar',i:'plus',c:'r',act:'cap'},
-  {w:'consumir',i:'cal',c:'',go:'consumos',n:'n-cons'},
+  {w:'consumir',i:'bag',c:'',go:'consumos',n:'n-cons'},
   {w:'ouvir',i:'phones',c:'b',act:'ouvir'},
-  {w:'revisar',i:'repeat',c:'r',go:'revisar',n:'n-rev'},
+  {w:'lembrar',i:'repeat',c:'r',go:'revisar',n:'n-rev'},
   {w:'biblioteca',i:'books',c:'',go:'biblioteca',n:'n-lib'},
   {w:'busco',i:'search',c:'b',go:'busco',n:'n-busco'}
 ];
 function renderShell(){
   $('hero').innerHTML=HERO.map((h,k)=>'<button class="hw '+h.c+'" style="--n:'+k+'" '+(h.go?'data-tab="'+h.go+'"':'data-act="'+h.act+'"')+'>'+h.w+'<span class="par">'+icon(h.i)+'</span>'+(h.n?'<sup id="'+h.n+'"></sup>':'')+'</button>').join('');
   $('nav').innerHTML=
-    '<button class="tab" data-tab="inicio">'+icon('home')+'Início</button>'+
-    '<button class="tab" data-tab="consumos">'+icon('cal')+'Consumos</button>'+
+    '<button class="tab" data-tab="inicio">'+icon('home')+'início</button>'+
+    '<button class="tab" data-tab="consumos">'+icon('bag')+'consumos</button>'+
     '<button class="mais" data-act="cap" aria-label="Guardar link ou texto">'+icon('plus')+'</button>'+
-    '<button class="tab" data-tab="revisar">'+icon('repeat')+'Revisar<span class="n" id="rev-n" hidden></span></button>'+
-    '<button class="tab" data-tab="biblioteca">'+icon('books')+'Biblioteca</button>';
+    '<button class="tab" data-tab="revisar">'+icon('repeat')+'lembrar<span class="n" id="rev-n" hidden></span></button>'+
+    '<button class="tab" data-tab="biblioteca">'+icon('books')+'biblioteca</button>';
 }
 
 /* ---------- Guardar ---------- */
@@ -643,8 +686,7 @@ async function saveCapture(){
     const parts=d.body?await writeBody(ref.id,d.body):0;
     await withRetry(()=>ref.set({title:d.title,type,url:d.url||null,excerpt:excerptOf(d.body),words:wordCount(d.body),parts,note:'',createdAt:now,updatedAt:now,day,step:0,due:addDays(day,OFFSETS[0]),archived:false,done:false}));
     $('cap').value='';capType=null;closeCap();
-    toast('Guardado em '+TYPE[type].label+'.');
-    const m=document.querySelector('.mais');m.classList.remove('pop');void m.offsetWidth;m.classList.add('pop');
+    celebrate(TYPE[type]);
   }catch(e){toast(errMsg(e));btn.disabled=false;}
 }
 
@@ -656,10 +698,10 @@ function row(it,o){
   const meta=[t.label];
   if(o.time){const d=new Date(it.createdAt);meta.push(pad(d.getHours())+':'+pad(d.getMinutes()));}else if(!o.noDay)meta.push(fmtDay(it.day,today));
   if(it.words)meta.push(mins(it.words)+' min');
-  if(o.due&&it.due)meta.push(it.due<=today?'<span class="tag">revisar</span>':fmtDay(it.due,today));
+  if(o.due&&it.due)meta.push(it.due<=today?'<span class="tag">lembrar</span>':fmtDay(it.due,today));
   let h='<li><button class="row" data-open="'+esc(it.id)+'">'+icon(t.icon)+'<span class="rmain"><span class="rtitle">'+esc(it.title)+'</span><span class="rmeta">'+meta.join(' · ')+'</span></span></button>';
   if(o.check)h+='<button class="ic" data-done="'+esc(it.id)+'" aria-label="'+(it.done?'Voltar para a consumir':'Marcar como consumido')+'">'+icon(it.done?'undo':'check')+'</button>';
-  if(o.review)h+='<div class="ractions"><button class="btn sm pri" data-reviewed="'+esc(it.id)+'">'+icon('check')+'Revisei</button><button class="btn sm" data-snooze="'+esc(it.id)+'">'+icon('clock')+'Amanhã</button></div>';
+  if(o.review)h+='<div class="ractions"><button class="btn sm pri" data-reviewed="'+esc(it.id)+'">'+icon('check')+'lembrei</button><button class="btn sm" data-snooze="'+esc(it.id)+'">'+icon('clock')+'Amanhã</button></div>';
   return h+'</li>';
 }
 function byDay(list,o){
@@ -679,7 +721,7 @@ function nextUp(needText){
   const today=dayKey();const a=all().filter(i=>!needText||i.parts||i.note);
   if(P.itemId&&P.state==='paused'&&items.get(P.itemId))return {it:items.get(P.itemId),why:'Pausado'};
   const due=a.filter(i=>i.due&&i.due<=today).sort((x,y)=>x.due<y.due?-1:x.due>y.due?1:0);
-  if(due.length)return {it:due[0],why:'Revisar hoje'};
+  if(due.length)return {it:due[0],why:'lembrar hoje'};
   const resume=a.find(i=>lsGet('pos:'+i.id,0)>0);
   if(resume)return {it:resume,why:'Continuar'};
   const todo=a.find(i=>!i.done);
@@ -696,15 +738,13 @@ function renderCounts(){
 }
 function renderInicio(){
   renderCounts();
-  const n=loaded?nextUp(false):null;
-  if(!n)$('cont').innerHTML='';
-  else{const it=n.it;const can=!!(it.parts||it.note);
-    $('cont').innerHTML='<div class="cont"><button class="cont-t" data-open="'+esc(it.id)+'"><small>'+n.why+'</small><span>'+esc(it.title)+'</span></button>'+
-      (can?'<button class="round" data-listen="'+esc(it.id)+'" aria-label="Ouvir">'+icon('phones')+'</button>':'')+
-      '<button class="round fill" data-open="'+esc(it.id)+'" aria-label="Ler">'+icon('read')+'</button></div>';}
-  const a=all().slice(0,8);
-  $('mq').hidden=!a.length;
-  if(a.length){const s=a.map(i=>'<span>'+esc(i.title.length>46?i.title.slice(0,44)+'…':i.title)+'</span><b>*</b>').join('');$('mq-in').innerHTML=s+s;}
+  if(!loaded){$('side').innerHTML='';return;}
+  const today=dayKey();const A=all();
+  const due=A.filter(i=>i.due&&i.due<=today).slice(0,3),todo=A.filter(i=>!i.done).slice(0,5);
+  let h='';
+  if(due.length)h+='<h3 class="dia">lembrar hoje</h3><ul class="list">'+due.map(i=>row(i,{noDay:true})).join('')+'</ul>';
+  if(todo.length)h+='<h3 class="dia">a consumir</h3><ul class="list">'+todo.map(i=>row(i,{check:true})).join('')+'</ul>';
+  $('side').innerHTML=h;
 }
 let consTab='todo';
 function renderConsumos(){
@@ -720,7 +760,7 @@ function renderRevisar(){
   const p=placeholder();if(p){$('rev-list').innerHTML=p;return;}
   const lim=addDays(today,7);
   const next=a.filter(i=>i.due&&i.due>today&&i.due<=lim).sort((x,y)=>x.due<y.due?-1:1);
-  let h=due.length?'<ul class="list">'+due.map(i=>row(i,{review:true})).join('')+'</ul>':'<p class="empty">Nada para revisar hoje.</p>';
+  let h=due.length?'<ul class="list">'+due.map(i=>row(i,{review:true})).join('')+'</ul>':'<p class="empty">Nada para lembrar hoje.</p>';
   if(next.length)h+='<h3 class="dia">Próximos dias</h3><ul class="list">'+next.map(i=>row(i,{noDay:true,due:true})).join('')+'</ul>';
   $('rev-list').innerHTML=h;
 }
@@ -811,8 +851,8 @@ function refreshSheetMeta(){
   $('d-when').textContent=fmtDay(it.day,today)+(it.words?' · '+mins(it.words)+' min':'');
   const step=it.step||0;
   $('d-review').innerHTML=it.due==null?
-    '<span>Revisões feitas</span><button class="btn sm" data-restart>'+icon('repeat')+'Revisar de novo</button>':
-    '<span>Revisão '+(step+1)+' de 3 · '+(it.due<=today?'<span class="tag">hoje</span>':fmtDay(it.due,today))+'</span><button class="btn sm pri" data-reviewed="'+esc(it.id)+'">'+icon('check')+'Revisei</button>';
+    '<span>Já lembrado</span><button class="btn sm" data-restart>'+icon('repeat')+'lembrar de novo</button>':
+    '<span>Lembrar '+(it.due<=today?'<span class="tag">hoje</span>':fmtDay(it.due,today))+'</span><button class="btn sm pri" data-reviewed="'+esc(it.id)+'">'+icon('check')+'lembrei</button>';
   $('d-done').innerHTML=icon(it.done?'undo':'check')+(it.done?'A consumir':'Consumido');
   $('arch-l').textContent=it.archived?'Desarquivar':'Arquivar';
   const ti=$('d-title');if(ti&&document.activeElement!==ti&&ti.value!==it.title){ti.value=it.title;growTitle();}
@@ -884,7 +924,7 @@ function flushNote(){if(!noteTimer)return;clearTimeout(noteTimer);noteTimer=null
 async function saveNote(id,v){await patch(id,{note:v});if($('note-state')&&current===id)$('note-state').textContent='Salvo';}
 
 function markReviewed(id){const it=items.get(id);if(!it)return;const prev={step:it.step||0,due:it.due};const r=reviewAfter(it,dayKey());patch(id,r);renderAll();
-  toast('Revisado.',()=>{patch(id,prev);renderAll();});}
+  toast('Lembrado.',()=>{patch(id,prev);renderAll();});}
 function snooze(id){const it=items.get(id);if(!it)return;const prev=it.due;patch(id,{due:addDays(dayKey(),1)});renderAll();toast('Amanhã.',()=>{patch(id,{due:prev});renderAll();});}
 function toggleDone(id){const it=items.get(id);if(!it)return;const d=!it.done;patch(id,{done:d});renderAll();toast(d?'Consumido.':'Voltou para a consumir.',()=>{patch(id,{done:!d});renderAll();});}
 
@@ -1096,6 +1136,27 @@ function updatePlayerUI(){
   }
 }
 
+/* ---------- Abertura e momento de guardar ---------- */
+const BAG='<svg class="bagsvg" viewBox="0 0 120 120" aria-hidden="true"><path class="ln l1" pathLength="1" d="M28 46h64l6 58a3 3 0 0 1-3 3H25a3 3 0 0 1-3-3z"/><path class="ln l2" pathLength="1" d="M44 46V36a16 16 0 0 1 32 0v10"/><circle class="dot d1" cx="46" cy="20" r="5"/><rect class="dot d2" x="56" y="6" width="10" height="10" rx="2"/><path class="dot d3" d="M74 14l9 5-9 5z"/></svg>';
+const letters=w=>'<div class="sw">'+w.split('').map(c=>'<span>'+c+'</span>').join('')+'</div>';
+const calm=()=>window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+function overlay(html,ms,quick){
+  const el=document.createElement('div');el.className='splash'+(quick?' quick':'');el.innerHTML=html;
+  document.body.appendChild(el);
+  const bye=()=>{el.classList.add('out');setTimeout(()=>el.remove(),400);};
+  el.addEventListener('click',bye);setTimeout(bye,ms);
+}
+function splash(){if(!calm())overlay(BAG+letters('stuff'),2650,false);}
+function celebrate(t){
+  if(calm()){toast('Guardado em '+t.label+'.');return;}
+  overlay(BAG+letters('guardado')+'<small>'+esc(t.label)+'</small>',1250,true);
+}
+function shareApp(){
+  const url=location.href.split('#')[0].split('?')[0];
+  if(navigator.share){navigator.share({title:'Stuff',url}).catch(()=>{});return;}
+  if(navigator.clipboard&&navigator.clipboard.writeText)navigator.clipboard.writeText(url).then(()=>toast('Link copiado.')).catch(()=>toast(url));else toast(url);
+}
+
 /* ---------- Eventos ---------- */
 let toastTimer=null;
 function toast(msg,undo){
@@ -1108,13 +1169,13 @@ document.addEventListener('click',e=>{
   if(e.target.id==='drawer'){closeCap();return;}
   const el=e.target.closest('button,a');if(!el)return;
   const ds=el.dataset;
-  if(el.id==='tema'){const i=TEMAS.findIndex(x=>x.k===prefs.tema);prefs.tema=TEMAS[(i+1)%TEMAS.length].k;savePrefs();applyTema();toast(TEMAS.find(x=>x.k===prefs.tema).l);return;}
+  if(el.id==='tema'){const i=TEMAS.findIndex(x=>x.k===temaAtual());prefs.tema=TEMAS[(i+1)%TEMAS.length].k;savePrefs();applyTema();return;}
   if(ds.act==='cap'){openCap();return;}
   if(ds.act==='ouvir'){
     if(P.itemId&&P.state!=='idle'){togglePlayer();return;}
     const n=nextUp(true);if(n)playItem(n.it.id);else location.hash='biblioteca';return;}
   if('capclose' in ds){closeCap();return;}
-  if(el.id==='cap-paste'){navigator.clipboard.readText().then(t=>{if(t){$('cap').value=t;updateCap();}}).catch(()=>toast('Cole com o teclado.'));return;}
+  if(el.id==='share'){shareApp();return;}
   if(ds.tab){location.hash=ds.tab;return;}
   if(ds.open){openItem(ds.open);return;}
   if(ds.listen){playItem(ds.listen);return;}
@@ -1169,9 +1230,11 @@ document.addEventListener('keydown',e=>{
   if(e.key==='Escape'&&!$('sheet').hidden){e.preventDefault();closeSheet();}
 });
 $('cap-form').addEventListener('submit',e=>{e.preventDefault();saveCapture();});
+$('cap').addEventListener('paste',()=>{setTimeout(()=>{const d=detect($('cap').value);if(d&&!d.body&&!capType)saveCapture();},30);});
 $('want-form').addEventListener('submit',e=>{e.preventDefault();addWant();});
 window.addEventListener('hashchange',route);
 let lastDay=dayKey();
 setInterval(()=>{const d=dayKey();if(d!==lastDay){lastDay=d;renderAll();}},60000);
+splash();
 init();
 </script>
