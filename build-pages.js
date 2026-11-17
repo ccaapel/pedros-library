@@ -7,7 +7,14 @@ const zlib = require('zlib');
 const root = __dirname;
 const out = path.join(root, 'docs');
 fs.mkdirSync(out, { recursive: true });
-const src = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+/* Fontes guardadas no aparelho: com internet valem as do Google (todas as línguas); sem internet entram estas cópias (latim), para o cartaz não cair na fonte reserva. */
+const src = fs.readFileSync(path.join(root, 'index.html'), 'utf8')
+  .replace('--fd:"Anton",', '--fd:"Anton","Anton L",')
+  .replace('--f:"Plus Jakarta Sans",', '--f:"Plus Jakarta Sans","PJS L",');
+if (!src.includes('"Anton L"') || !src.includes('"PJS L"')) throw new Error('tokens de fonte mudaram em index.html: ajustar build-pages.js');
+const FONTS = ['anton-latin.woff2', 'plus-jakarta-sans-latin.woff2'];
+fs.mkdirSync(path.join(out, 'fonts'), { recursive: true });
+for (const f of [...FONTS, 'OFL-Anton.txt', 'OFL-PlusJakartaSans.txt']) fs.copyFileSync(path.join(root, 'fonts', f), path.join(out, 'fonts', f));
 const BG = '#101412';
 
 /* Página completa: o arquivo do Artifact não tem <html>, <head> nem <body> */
@@ -24,7 +31,7 @@ const page = `<!doctype html>
 <link rel="manifest" href="manifest.webmanifest">
 <link rel="icon" type="image/png" href="icon-192.png">
 <link rel="apple-touch-icon" href="icon-180.png">
-<style>:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
+<style>@font-face{font-family:"Anton L";src:url(fonts/anton-latin.woff2) format("woff2");font-weight:400;font-display:swap}@font-face{font-family:"PJS L";src:url(fonts/plus-jakarta-sans-latin.woff2) format("woff2");font-weight:400 700;font-display:swap}:root{color-scheme:light;padding-top:env(safe-area-inset-top);padding-bottom:env(safe-area-inset-bottom)}body{margin:0;font:14px system-ui}img{max-width:100%}[hidden]{display:none!important}</style>
 </head>
 <body>
 ${src}
@@ -55,8 +62,8 @@ fs.writeFileSync(path.join(out, 'manifest.webmanifest'), JSON.stringify({
 }, null, 2));
 
 /* Service worker: abre o app mesmo sem internet (os dados já ficam no aparelho) */
-fs.writeFileSync(path.join(out, 'sw.js'), `const V = 'stuff-v4';
-const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png'];
+fs.writeFileSync(path.join(out, 'sw.js'), `const V = 'stuff-v5';
+const SHELL = ['./', 'index.html', 'manifest.webmanifest', 'icon-192.png', 'icon-512.png', 'fonts/anton-latin.woff2', 'fonts/plus-jakarta-sans-latin.woff2'];
 self.addEventListener('install', e => { e.waitUntil(caches.open(V).then(c => c.addAll(SHELL)).then(() => self.skipWaiting())); });
 self.addEventListener('activate', e => { e.waitUntil(caches.keys().then(ks => Promise.all(ks.filter(k => k !== V).map(k => caches.delete(k)))).then(() => self.clients.claim())); });
 self.addEventListener('fetch', e => {
