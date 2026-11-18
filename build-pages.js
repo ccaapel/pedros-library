@@ -11,7 +11,8 @@ fs.mkdirSync(out, { recursive: true });
 const src = fs.readFileSync(path.join(root, 'index.html'), 'utf8')
   .replace('--fd:"Anton",', '--fd:"Anton","Anton L",')
   .replace('--f:"Plus Jakarta Sans",', '--f:"Plus Jakarta Sans","PJS L",');
-if (!src.includes('"Anton L"') || !src.includes('"PJS L"')) throw new Error('tokens de fonte mudaram em index.html: ajustar build-pages.js');
+/* A fonte de cartaz (Anton) é opcional; a de texto é obrigatória. */
+if (!src.includes('"PJS L"')) throw new Error('token --f mudou em index.html: ajustar build-pages.js');
 const FONTS = ['anton-latin.woff2', 'plus-jakarta-sans-latin.woff2'];
 fs.mkdirSync(path.join(out, 'fonts'), { recursive: true });
 for (const f of [...FONTS, 'OFL-Anton.txt', 'OFL-PlusJakartaSans.txt']) fs.copyFileSync(path.join(root, 'fonts', f), path.join(out, 'fonts', f));
